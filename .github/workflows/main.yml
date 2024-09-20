@@ -1,0 +1,26 @@
+name: RDP Connection Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  connect-rdp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install xfreerdp
+        run: sudo apt-get install -y freerdp2-x11
+
+      - name: RDP Connection
+        run: |
+          xfreerdp /u:$RDP_USERNAME /p:$RDP_PASSWORD /v:$RDP_SERVER_IP:3389
+
+        env:
+          RDP_USERNAME: ${{ secrets.RDP_USERNAME }}
+          RDP_PASSWORD: ${{ secrets.RDP_PASSWORD }}
+          RDP_SERVER_IP: ${{ secrets.RDP_SERVER_IP }}
